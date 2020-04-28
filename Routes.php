@@ -121,13 +121,13 @@ class Routes {
 				add_action('parse_query', function($query) {
 					if ($query->is_main_query()){
 						$query->is_404 = false;
+						$query->is_attachment = false;
+						$query->is_page = true;
 					}
 				},1);
 				add_action('template_redirect', function(){
 					global $wp_query;
 					$wp_query->is_404 = false;
-					$query->is_attachment = false;
-					$query->is_page = true;
 				},1);
 			}
 		}
