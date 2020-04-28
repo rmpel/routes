@@ -55,6 +55,11 @@ class Routes {
 				} else {
 					call_user_func($route['target']);
 				}
+		static $onlyonceplease;
+		if ($onlyonceplease) {
+			return;
+		}
+		$onlyonceplease = true;
 			}
 		}
 	}
