@@ -17,7 +17,7 @@ Routes::map('/my-location', function(){
 
 class Routes {
 
-	protected $router;
+	public $router;
 
 	public static function getInstance() {
 		static $instance;
@@ -28,9 +28,18 @@ class Routes {
 		return $instance;
 	}
 
+	/**
+	 * Routes constructor.
+	 */
 	function __construct(){
 		add_action('init', array($this, 'match_current_request') );
 		add_action('wp_loaded', array($this, 'match_current_request') );
+
+		$this->router = new AltoRouter();
+		$site_url = trailingslashit( get_bloginfo('url') );
+		$base_path = parse_url($site_url, PHP_URL_PATH);
+
+		$this->router->setBasePath($base_path);
 	}
 
 	static function match_current_request() {
@@ -61,21 +70,6 @@ class Routes {
 	 */
 	public static function map($route, $callback, $args = array()) {
 		global $upstatement_routes;
-		if (!isset($upstatement_routes->router)) {
-			$upstatement_routes->router = new AltoRouter();
-			$site_url = get_bloginfo('url');
-			$site_url_parts = explode('/', $site_url);
-			$site_url_parts = array_slice($site_url_parts, 3);
-			$base_path = implode('/', $site_url_parts);
-			if (!$base_path || strpos($route, $base_path) === 0) {
-				$base_path = '/';
-			} else {
-				$base_path = '/' . $base_path . '/';
-			}
-			// Clean any double slashes that have resulted
-			$base_path = str_replace( "//", "/", $base_path );
-			$upstatement_routes->router->setBasePath($base_path);
-		}
 		$route = self::convert_route($route);
 		$upstatement_routes->router->map('GET|POST|PUT|DELETE', trailingslashit($route), $callback, $args);
 		$upstatement_routes->router->map('GET|POST|PUT|DELETE', untrailingslashit($route), $callback, $args);
