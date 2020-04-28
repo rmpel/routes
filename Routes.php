@@ -73,11 +73,38 @@ class Routes {
 	 *                                  //stuff goes here
 	 *                              });
 	 */
-	public static function map($route, $callback, $args = array()) {
-		global $upstatement_routes;
+	public static function map($route, $callback, $name = false, $methods = 'GET|POST|PUT|DELETE|PATCH') {
 		$route = self::convert_route($route);
-		$upstatement_routes->router->map('GET|POST|PUT|DELETE', trailingslashit($route), $callback, $args);
-		$upstatement_routes->router->map('GET|POST|PUT|DELETE', untrailingslashit($route), $callback, $args);
+		self::getInstance()->router->map($methods, trailingslashit($route), $callback, $name);
+
+		// this route is non-trailing-slashed and it will eventually be redirected by canonical_redirect to
+		// a trailing-slashed route. This route should never be used actively, nor generated, so we DO NOT
+		// allow passing the name.
+		self::getInstance()->router->map($methods, untrailingslashit($route), $callback);
+	}
+
+	public static function any( $route, $callback, $name = false ) {
+		self::map($route, $callback, $name, 'ANY');
+	}
+
+	public static function get( $route, $callback, $name = false ) {
+		self::map($route, $callback, $name, 'GET');
+	}
+
+	public static function put( $route, $callback, $name = false ) {
+		self::map($route, $callback, $name, 'PUT');
+	}
+
+	public static function post( $route, $callback, $name = false ) {
+		self::map($route, $callback, $name, 'POST');
+	}
+
+	public static function delete( $route, $callback, $name = false ) {
+		self::map($route, $callback, $name, 'DELETE');
+	}
+
+	public static function patch( $route, $callback, $name = false ) {
+		self::map($route, $callback, $name, 'PATCH');
 	}
 
 	/**
