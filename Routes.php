@@ -16,6 +16,8 @@ Routes::map('/my-location', function(){
 */
 
 class Routes {
+	public $current_route;
+	public $current_method;
 
 	public $router;
 
@@ -43,23 +45,20 @@ class Routes {
 	}
 
 	static function match_current_request() {
-		global $upstatement_routes;
-		if (isset($upstatement_routes->router)) {
-			$route = $upstatement_routes->router->match();
-			
-			unset($upstatement_routes->router);
-			
-			if ($route && isset($route['target'])) {
-				if ( isset($route['params']) ) {
-					call_user_func($route['target'], $route['params']);
-				} else {
-					call_user_func($route['target']);
-				}
 		static $onlyonceplease;
 		if ($onlyonceplease) {
 			return;
 		}
 		$onlyonceplease = true;
+		$route = self::getInstance()->router->match();
+		self::getInstance()->current_route = $route;
+		self::getInstance()->current_method = $_SERVER['REQUEST_METHOD'];
+
+		if ($route && isset($route['target'])) {
+			if ( isset($route['params']) ) {
+				call_user_func($route['target'], $route['params']);
+			} else {
+				call_user_func($route['target']);
 			}
 		}
 	}
