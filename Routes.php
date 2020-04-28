@@ -64,6 +64,24 @@ class Routes {
 		}
 	}
 
+	public static function generate( $route_or_route_name, $params = [], $method = null ) {
+		$router = self::getInstance()->router;
+
+		if (!is_array($params)) {
+			$params = (array) $params;
+		}
+		/** @var AltoRouter $router */
+		return $router->generate( self::convert_route($route_or_route_name), $params, $method);
+	}
+
+	// as we are redirecting the user, the method here is always GET
+	public static function redirect( $route_or_route_name, $params = [] ) {
+		$redirect = self::getInstance()->router->generate( self::convert_route($route_or_route_name), $params, 'GET');
+		wp_redirect($redirect);
+		exit;
+	}
+
+
 	/**
 	 * @param string $route         A string to match (ex: 'myfoo')
 	 * @param callable $callback    A function to run, examples:
