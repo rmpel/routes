@@ -18,6 +18,7 @@ Routes::map('/my-location', function(){
 class Routes {
 	public $current_route;
 	public $current_method;
+	public $current_template;
 
 	public $router;
 
@@ -117,6 +118,7 @@ class Routes {
 		if ($tparams){
 			global $params;
 			$params = $tparams;
+			self::getInstance()->current_template = compact('template', 'params', 'query', 'status_code', 'priority');
 		}
 		if ($status_code) {
 			add_filter('status_header', function($status_header, $header, $text, $protocol) use ($status_code) {
