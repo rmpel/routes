@@ -19,6 +19,15 @@ class Routes {
 
 	protected $router;
 
+	public static function getInstance() {
+		static $instance;
+		if (!$instance) {
+			$instance = new self();
+		}
+
+		return $instance;
+	}
+
 	function __construct(){
 		add_action('init', array($this, 'match_current_request') );
 		add_action('wp_loaded', array($this, 'match_current_request') );
@@ -159,7 +168,7 @@ class Routes {
 }
 
 global $upstatement_routes;
-$upstatement_routes = new Routes();
+$upstatement_routes = Routes::getInstance();
 
 if (    file_exists($composer_autoload = __DIR__ . '/vendor/autoload.php')
 		|| file_exists($composer_autoload = WP_CONTENT_DIR.'/vendor/autoload.php')){
