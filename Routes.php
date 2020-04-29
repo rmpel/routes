@@ -138,9 +138,6 @@ class Routes {
 		$route_string = str_replace(']]', ']', $route_string);
 		$route_string = str_replace('[/:', '[:', $route_string);
 		$route_string = str_replace('//[', '/[', $route_string);
-		if ( strpos($route_string, '/') === 0 ) {
-			$route_string = substr($route_string, 1);
-		}
 		return $route_string;
 	}
 
