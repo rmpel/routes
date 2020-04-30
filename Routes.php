@@ -64,14 +64,21 @@ class Routes {
 		}
 	}
 
-	public static function generate( $route_or_route_name, $params = [], $method = null ) {
+	public static function generate( $route_or_route_name, $params = [], $method = null, $fullURL = false ) {
 		$router = self::getInstance()->router;
 
 		if (!is_array($params)) {
 			$params = (array) $params;
 		}
 		/** @var AltoRouter $router */
-		return $router->generate( self::convert_route($route_or_route_name), $params, $method);
+		$url = $router->generate( self::convert_route($route_or_route_name), $params, $method);
+		if ($fullURL) {
+			$baseURL = get_bloginfo('url');
+			$basePath = trailingslashit( parse_url($baseURL, PHP_URL_PATH) );
+			$baseURL = trailingslashit(	$baseURL );
+			$url = preg_replace('@^'. $basePath .'@', $baseURL, $url);
+		}
+		return $url;
 	}
 
 	// as we are redirecting the user, the method here is always GET
