@@ -64,6 +64,14 @@ class Routes {
 		}
 	}
 
+	public static function path2url( $path ) {
+		$path = realpath($path);
+		if ($path && is_file($path) && substr($path, 0, strlen(ABSPATH)) === ABSPATH) {
+			return site_url( substr($path, strlen(ABSPATH)) );
+		}
+		return false;
+	}
+
 	public static function generate( $route_or_route_name, $params = [], $method = null, $fullURL = false ) {
 		$router = self::getInstance()->router;
 
