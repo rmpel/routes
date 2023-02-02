@@ -85,6 +85,8 @@ class Routes {
 			$basePath = trailingslashit( parse_url($baseURL, PHP_URL_PATH) );
 			$baseURL = trailingslashit(	$baseURL );
 			$url = preg_replace('@^'. $basePath .'@', $baseURL, $url);
+			$root_url = preg_replace('@'. $basePath .'$@', '/', $baseURL);
+			$url = preg_replace('@^/@', $root_url, $url);
 		}
 		return $url;
 	}
