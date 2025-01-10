@@ -1,5 +1,5 @@
 {
-    "name"       : "upstatement/routes",
+    "name"       : "rmpel/routes",
     "description": "Manage rewrites and routes in WordPress with this dead-simple plugin",
     "keywords"   : ["routes", "routing", "rewrite", "redirects"],
     "homepage"   : "http://routes.upstatement.com",
@@ -18,7 +18,7 @@
     },
     "require"    : {
         "php"                       : ">=5.3.0",
-        "altorouter/altorouter"		: "^1.2.0",
+        "altorouter/altorouter"		: "^1.2.0|dev-master",
         "composer/installers"       : "~1.0"
     },
     "require-dev": {
