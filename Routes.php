@@ -82,8 +82,8 @@ class Routes {
 		$url = $router->generate( self::convert_route($route_or_route_name), $params, $method);
 		if ($fullURL) {
 			$baseURL = get_bloginfo('url');
-			$basePath = trailingslashit( parse_url($baseURL, PHP_URL_PATH) );
-			$baseURL = trailingslashit(	$baseURL );
+			$basePath = trailingslashit( "" . parse_url($baseURL, PHP_URL_PATH) );
+			$baseURL = trailingslashit( "$baseURL" );
 			$url = preg_replace('@^'. $basePath .'@', $baseURL, $url);
 			$root_url = preg_replace('@'. $basePath .'$@', '/', $baseURL);
 			$url = preg_replace('@^/@', $root_url, $url);
